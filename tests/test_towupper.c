@@ -29,10 +29,11 @@ int test_towupper(void);
 #define CFOLD "CaseFolding.txt"
 #ifndef PERL
 /* Must have the same Unicode version 9.0, at least 5.26.
-   Better 5.27.3 with Unicode 10. */
+   Better 5.27.3 with Unicode 10, 5.30 with 12.1, 5.32 with 13.0
+ */
 /*# define PERL "perl" */
 /*# define PERL "cperl5.27.2"*/
-#define PERL "perl5.27.3"
+#define PERL "perl5.32"
 #endif
 #define TESTPL "test-upr.pl"
 
@@ -85,7 +86,10 @@ int check_casefolding(uint32_t lwr, uint32_t upr) {
                         __LINE__, wc, lwr, mp, status, name);
                     /* cross-check with perl */
                     if (!init) {
-                        fprintf(pl, "use v5.26;\n");
+                        fprintf(pl, "use v5.31.8;\n");
+                        fprintf(pl, "use Unicode::UCD;\n");
+                        fprintf(pl, "print Unicode::UCD::UnicodeVersion(), \" must be 13.0.0\n\";\n");
+                        fprintf(pl, "my ($l,$u,$got);\n");
                         init = 1;
                     }
                     fprintf(pl,
